@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using BulkyBook.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,11 +7,22 @@ using System.Text;
 
 namespace BulkyBook.DataAccess.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext // WOAW
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CoverType> CoverTypes { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ApplicationUser> applicationUsers { get; set; }
+        public DbSet<Company> companies { get; set; }
+
+        public DbSet<OrderDetails> orderDetails { get; set; }
+
+        public DbSet<ShoppingCart> shoppingCarts { get; set; }
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
     }
 }
