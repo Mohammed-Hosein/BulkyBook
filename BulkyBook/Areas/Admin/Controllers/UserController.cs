@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BulkyBook.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employye)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -34,7 +34,7 @@ namespace BulkyBook.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var userList = _db.applicationUsers.Include(u=>u.Company).ToList();
+            var userList = _db.ApplicationUsers.Include(u=>u.Company).ToList();
             var userRole = _db.UserRoles.ToList();
             var roles = _db.Roles.ToList();
             foreach(var user in userList)
@@ -56,7 +56,7 @@ namespace BulkyBook.Areas.Admin.Controllers
       [HttpPost]
       public IActionResult LockUnlock([FromBody] string id)
         {
-            var objFromDb = _db.applicationUsers.FirstOrDefault(u => u.Id == id);
+            var objFromDb = _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
             if (objFromDb == null)
             {
                 return Json(new { success = false, message = "Error while Locking/Unlocking" });

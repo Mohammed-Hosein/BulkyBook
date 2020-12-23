@@ -12,12 +12,13 @@ namespace BulkyBook.Utility
         public const string Proc_CoverType_Update = "usp_UpdateCoverType";
         public const string Proc_CoverType_Delete = "usp_DeleteCoverType";
 
-        public const string Role_User_Ind = "Individual Customer";
+        public const string Role_User_Indi = "Individual Customer";
         public const string Role_User_Comp = "Company Customer";
         public const string Role_Admin = "Admin";
-        public const string Role_Employye = "Employee";
+        public const string Role_Employee = "Employee";
 
         public const string ssShoppingCart = "Shoping Cart Session";
+
         public const string StatusPending = "Pending";
         public const string StatusApproved = "Approved";
         public const string StatusInProcess = "Processing";
@@ -31,15 +32,16 @@ namespace BulkyBook.Utility
         public const string PaymentStatusRejected = "Rejected";
 
 
+
         public static double GetPriceBasedOnQuantity(double quantity, double price, double price50, double price100)
         {
-            if (quantity < 50)
+            if(quantity < 50)
             {
                 return price;
             }
             else
             {
-                if (quantity < 100)
+                if(quantity < 100)
                 {
                     return price50;
                 }
@@ -52,8 +54,7 @@ namespace BulkyBook.Utility
 
         public static string ConvertToRawHtml(string source)
         {
-            if (source != null) { 
-                char[] array = new char[source.Length];
+            char[] array = new char[source.Length];
             int arrayIndex = 0;
             bool inside = false;
 
@@ -76,15 +77,7 @@ namespace BulkyBook.Utility
                     arrayIndex++;
                 }
             }
-           
             return new string(array, 0, arrayIndex);
-            }
-            else
-            {
-                return "";
-            }
-        
-       
         }
     }
 }

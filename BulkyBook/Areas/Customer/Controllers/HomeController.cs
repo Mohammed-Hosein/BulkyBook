@@ -36,7 +36,7 @@ namespace BulkyBook.Areas.Customer.Controllers
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (claim != null)
             {
-                var count = _unitOfWork.shoppingCart
+                var count = _unitOfWork.ShoppingCart
                     .GetAll(c => c.ApplicationUserId == claim.Value)
                     .ToList().Count();
 
@@ -72,7 +72,7 @@ namespace BulkyBook.Areas.Customer.Controllers
                 var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
                 CartObject.ApplicationUserId = claim.Value;
 
-                ShoppingCart cartFromDb = _unitOfWork.shoppingCart.GetFirstOrDefault(
+                ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.GetFirstOrDefault(
                     u => u.ApplicationUserId == CartObject.ApplicationUserId && u.ProductId == CartObject.ProductId
                     ,includeProperties:"Product"
                     );
@@ -80,7 +80,7 @@ namespace BulkyBook.Areas.Customer.Controllers
                 if (cartFromDb == null)
                 {
                     //no records exists in database for that product for that user
-                    _unitOfWork.shoppingCart.Add(CartObject);
+                    _unitOfWork.ShoppingCart.Add(CartObject);
                 }
                 else
                 {
@@ -89,7 +89,7 @@ namespace BulkyBook.Areas.Customer.Controllers
                 }
                 _unitOfWork.Save();
 
-                var count = _unitOfWork.shoppingCart
+                var count = _unitOfWork.ShoppingCart
                     .GetAll(c => c.ApplicationUserId == CartObject.ApplicationUserId)
                     .ToList().Count();
 

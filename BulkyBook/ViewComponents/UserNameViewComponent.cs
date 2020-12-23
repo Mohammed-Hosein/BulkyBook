@@ -21,7 +21,7 @@ namespace BulkyBook.ViewComponents
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var userFromDb = _unitOfWork.User.GetFirstOrDefault(u => u.Id == claims.Value);
+            var userFromDb = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claims.Value);
 
             return View(userFromDb);
         }

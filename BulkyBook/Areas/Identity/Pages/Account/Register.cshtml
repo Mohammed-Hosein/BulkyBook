@@ -13,7 +13,7 @@
                 <div class="card-body px-lg-5 pt-4">
                     <form autocomplete="off" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                         <h3 class="col-12 text-success text-center py-4">
-                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employye))
+                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                             {
                                 <strong>Register an User Account</strong>
                             }
@@ -86,7 +86,7 @@
                         </div>
                     </form>
 
-                    @if (!User.IsInRole(SD.Role_Admin) && !User.IsInRole(SD.Role_Employye))
+                    @if (!User.IsInRole(SD.Role_Admin) && !User.IsInRole(SD.Role_Employee))
                     {
                 <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                     <p>

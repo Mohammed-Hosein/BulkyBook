@@ -91,9 +91,9 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    var user = _unitOfWork.User.GetFirstOrDefault(u => u.Email == Input.Email);
+                    var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Email == Input.Email);
 
-                    int count = _unitOfWork.shoppingCart.GetAll(u => u.ApplicationUserId == user.Id).Count();
+                    int count = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == user.Id).Count();
                     HttpContext.Session.SetInt32(SD.ssShoppingCart, count);
 
                     _logger.LogInformation("User logged in.");

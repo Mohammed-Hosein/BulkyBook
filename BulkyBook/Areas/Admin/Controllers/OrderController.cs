@@ -33,9 +33,9 @@ namespace BulkyBook.Areas.Admin.Controllers
         {
             OrderVM = new OrderDetailsVM()
             {
-                OrderHeader = _unitOfWork.orderHeader.GetFirstOrDefault(u => u.Id == id,
+                OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id,
                                                 includeProperties: "ApplicationUser"),
-                OrderDetails = _unitOfWork.orderDetails.GetAll(o => o.OrderId == id, includeProperties: "Product")
+                OrderDetails = _unitOfWork.OrderDetails.GetAll(o => o.OrderId == id, includeProperties: "Product")
 
             };
             return View(OrderVM);
@@ -46,7 +46,7 @@ namespace BulkyBook.Areas.Admin.Controllers
         [ActionName("Details")]
         public IActionResult Details(string stripeToken)
         {
-            OrderHeader orderHeader = _unitOfWork.orderHeader.GetFirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id,
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id,
                                                 includeProperties: "ApplicationUser");
             if(stripeToken!=null)
             {
@@ -84,20 +84,20 @@ namespace BulkyBook.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles =SD.Role_Admin+","+SD.Role_Employye)]
+        [Authorize(Roles =SD.Role_Admin+","+SD.Role_Employee)]
         public IActionResult StartProcessing(int id)
         {
-            OrderHeader orderHeader = _unitOfWork.orderHeader.GetFirstOrDefault(u => u.Id == id);
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id);
             orderHeader.OrderStatus = SD.StatusInProcess;
             _unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employye)]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
         public IActionResult ShipOrder()
         {
-            OrderHeader orderHeader = _unitOfWork.orderHeader.GetFirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id);
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id);
             orderHeader.TrackingNumber = OrderVM.OrderHeader.TrackingNumber;
             orderHeader.Carrier = OrderVM.OrderHeader.Carrier;
             orderHeader.OrderStatus = SD.StatusShipped;
@@ -107,10 +107,10 @@ namespace BulkyBook.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employye)]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
         public IActionResult CancelOrder(int id)
         {
-            OrderHeader orderHeader = _unitOfWork.orderHeader.GetFirstOrDefault(u => u.Id == id);
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id);
             if (orderHeader.PaymentStatus == SD.StatusApproved)
             {
                 var options = new RefundCreateOptions
@@ -138,7 +138,7 @@ namespace BulkyBook.Areas.Admin.Controllers
 
         public IActionResult UpdateOrderDetails()
         {
-            var orderHEaderFromDb = _unitOfWork.orderHeader.GetFirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id);
+            var orderHEaderFromDb = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id);
             orderHEaderFromDb.Name = OrderVM.OrderHeader.Name;
             orderHEaderFromDb.PhoneNumber = OrderVM.OrderHeader.PhoneNumber;
             orderHEaderFromDb.StreetAddress = OrderVM.OrderHeader.StreetAddress;
@@ -169,13 +169,13 @@ namespace BulkyBook.Areas.Admin.Controllers
 
             IEnumerable<OrderHeader> orderHeaderList;
 
-            if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employye))
+            if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
             {
-                orderHeaderList = _unitOfWork.orderHeader.GetAll(includeProperties: "ApplicationUser");
+                orderHeaderList = _unitOfWork.OrderHeader.GetAll(includeProperties: "ApplicationUser");
             }
             else
             {
-                orderHeaderList = _unitOfWork.orderHeader.GetAll(
+                orderHeaderList = _unitOfWork.OrderHeader.GetAll(
                                         u=>u.ApplicationUserId==claim.Value,
                                         includeProperties: "ApplicationUser");
             }
